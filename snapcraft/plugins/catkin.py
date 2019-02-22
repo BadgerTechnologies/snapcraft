@@ -132,6 +132,9 @@ class CatkinPlugin(snapcraft.BasePlugin):
             'type': 'string',
             'default': 'indigo'
         }
+        schema['properties']['rosdep-sources'] = {
+            'type': 'string',
+        }
         schema['properties']['catkin-packages'] = {
             'type': 'array',
             'minitems': 1,
@@ -430,6 +433,7 @@ class CatkinPlugin(snapcraft.BasePlugin):
         rosdep = _ros.rosdep.Rosdep(
             ros_distro=self.options.rosdistro,
             ros_package_path=self._ros_package_path,
+            rosdep_source=self.options.rosdep_sources,
             rosdep_path=self._rosdep_path,
             ubuntu_distro=_ROS_RELEASE_MAP[self.options.rosdistro],
             ubuntu_sources=self.PLUGIN_STAGE_SOURCES,

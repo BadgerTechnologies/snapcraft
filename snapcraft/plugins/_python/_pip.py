@@ -237,8 +237,16 @@ class Pip:
         # --disable-pip-version-check: Don't whine if pip is out-of-date with
         #                              the version on pypi.
         # --dest: Download packages into the directory we've set aside for it.
-        self._run(['download', '--disable-pip-version-check', '--dest',
-                   self._python_package_dir] + args, cwd=cwd)
+        pip_cmd = ['download', '--disable-pip-version-check', '--dest',
+                   self._python_package_dir]
+
+        # --index url for installation from a local mirror.
+        if os.environ.get("LOCAL_PIP") is not None:
+            pip_index = os.environ.get("LOCAL_PIP")
+            pip_host = pip_index.split('/')[2].split(':')[0]
+            pip_cmd.extend(['--index-url', pip_index, '--trusted-host',
+                            pip_host])
+        self._run(pip_cmd + args, cwd=cwd)
 
     def install(self, packages, *, setup_py_dir=None, constraints=None,
                 requirements=None, process_dependency_links=False,

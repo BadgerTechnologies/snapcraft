@@ -1,8 +1,5 @@
 FROM ubuntu:xenial
 
-# Enable multiverse as snapcraft cleanbuild does.
-RUN sed -i 's/ universe/ universe multiverse/' /etc/apt/sources.list
-
 RUN apt-get update && \
   apt-get dist-upgrade --yes && \
   apt-get autoclean --yes && \
@@ -17,10 +14,10 @@ RUN apt-get install git sudo libslang2-dev python-pip python3-pip gcc g++ make p
 ADD ./ /snapcraft
 
 RUN mkdir -p /venv/snapcraft && \
-python3 -m venv /venv/snapcraft && \
-. /venv/snapcraft/bin/activate && \
-pip --no-cache-dir install wheel && \
-pip --no-cache-dir install -r /snapcraft/requirements.txt
+  python3 -m venv /venv/snapcraft && \
+  . /venv/snapcraft/bin/activate && \
+  pip --no-cache-dir install wheel && \
+  pip --no-cache-dir install -r /snapcraft/requirements.txt
 
 
 ADD docker-files/snapcraft /bin/snapcraft
