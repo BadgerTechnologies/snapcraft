@@ -61,7 +61,7 @@ def build_env(root, snap_name, confinement, arch_triplet,
     if paths:
         for envvar in ['CPPFLAGS', 'CFLAGS', 'CXXFLAGS']:
             env.append(formatting_utils.format_path_variable(
-                envvar, paths, prepend='-I', separator=' '))
+                envvar, paths, prepend='-isystem ', separator=' '))
 
     if confinement == 'classic':
         if not core_dynamic_linker:
